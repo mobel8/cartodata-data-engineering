@@ -87,4 +87,4 @@ Dates Indeed relatives ; contrat Indeed `Non précisé` ; géocodage lat/lon (BA
 Dépôt **public-safe** : **aucune information personnelle** (nom/email/téléphone/adresse/ville de domicile). « Le Bourget » n'apparaît que comme **commune d'offres** dans le référentiel géo (donnée marché), jamais comme information personnelle.
 
 ## 15. Place dans la plateforme
-Module **#01 (SOCLE)** du monorepo **[CartoData IDF](../README.md)**. Produit le GOLD consommé par le module **#02 (Observatoire BI)** déjà construit, et par les modules ML / Gouvernance / GenAI à venir. *Une donnée maîtrisée, amortie sur plusieurs familles de postes.*
+Module **#01 (SOCLE)** du monorepo **CartoData IDF**. Produit le GOLD consommé par le module **#02 (Observatoire BI)** déjà construit, et par les modules ML / Gouvernance / GenAI à venir. *Une donnée maîtrisée, amortie sur plusieurs familles de postes.*

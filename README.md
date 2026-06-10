@@ -1,6 +1,6 @@
 # Observatoire Data/IA IDF — Lakehouse ELT orchestré & DataOps (Module 01)
 
-> **Le SOCLE de la plateforme [CartoData IDF](../README.md).** J'ai industrialisé mes propres scrapers d'offres Data/IA d'Île-de-France en un **lakehouse ELT medallion** — orchestré (Dagster), transformé et testé (dbt), conteneurisé (Docker), exposé en API (FastAPI) et *cloud-ready* (sync objet S3-compatible) — qui produit le **dataset GOLD** consommé par tous les autres modules du portfolio.
+> **Le SOCLE de la plateforme CartoData IDF.** J'ai industrialisé mes propres scrapers d'offres Data/IA d'Île-de-France en un **lakehouse ELT medallion** — orchestré (Dagster), transformé et testé (dbt), conteneurisé (Docker), exposé en API (FastAPI) et *cloud-ready* (sync objet S3-compatible) — qui produit le **dataset GOLD** consommé par tous les autres modules du portfolio.
 
 Le vrai métier d'un data engineer junior n'est pas un modèle ML : c'est **faire couler une donnée sale, multi-source, de façon fiable, répétable et observable**. Ce projet prouve exactement ça, sur des données **réelles** (pas un CSV Kaggle propre) : 2 schémas sources incompatibles, des salaires en texte libre, des dates relatives, des champs partiels — tous **mesurés et assumés en clair**.
 
@@ -163,3 +163,15 @@ Tout tourne en local (DuckDB/Docker). La couche GOLD (Parquet) est **synchronisa
 ---
 
 *Données = offres d'emploi publiques (marché concurrentiel IDF). Aucune donnée personnelle. Dépôt public-safe.*
+
+---
+
+## 🛰️ Plateforme CartoData IDF
+
+Projet portfolio data/IA construit sur **un seul dataset** (le marché de l'emploi Data/IA d'Île-de-France que j'ai scrapé) — **un projet par famille de métier** :
+
+- 🔧 **Data Engineering — Lakehouse ELT — vous êtes ici**
+- 📊 [BI — Observatoire « Where do I fit? »](https://github.com/mobel8/cartodata-observatoire-bi)
+- 🤖 [Data Science / ML — SalaryScope](https://github.com/mobel8/cartodata-salaryscope-ml)
+- 🛡️ [Data Product / Gouvernance — DataTrust](https://github.com/mobel8/cartodata-datatrust-gouvernance)
+- 💬 [IA générative / NLP — CartoIA](https://github.com/mobel8/cartodata-cartoia-genai)
