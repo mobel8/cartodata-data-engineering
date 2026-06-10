@@ -1,0 +1,41 @@
+# Données matérialisées (régénérables depuis bronze) — JAMAIS commitées
+data/bronze/
+data/silver/
+data/gold/
+warehouse/
+*.duckdb
+*.duckdb.wal
+*.parquet
+
+# dbt
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+
+# Dagster
+.dagster/
+dagster_home/
+$DAGSTER_HOME/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+build/
+*.egg-info/
+*.egg-link
+.pytest_cache/
+.ruff_cache/
+
+# Dagster (instance temporaire créée par `dagster definitions validate`)
+.tmp_dagster_home*/
+
+# OS / éditeur
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Secrets (sync cloud)
+.env

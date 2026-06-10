@@ -1,0 +1,10 @@
+cartodata_de:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      # Relatif au --project-dir (dbt s'exécute avec cwd = dossier dbt/).
+      path: "../warehouse/observatoire.duckdb"
+      threads: 4
+      extensions:
+        - parquet

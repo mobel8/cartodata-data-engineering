@@ -1,0 +1,28 @@
+{
+  "run_date": "2026-06-10",
+  "n_total": 7923,
+  "n_wttj": 2171,
+  "n_indeed": 5752,
+  "n_twins_indeed": 273,
+  "n_salary": 1878,
+  "pct_salary": 23.7,
+  "n_rejects_salaire": 152,
+  "silver_path": "C:\\Users\\yamin\\Desktop\\Candidatures\\Profil Data\\_projets\\cartodata-idf\\01-data-engineering\\data\\silver\\offres.parquet",
+  "dbt_returncode": 0,
+  "gold_exported": [
+    "mart_completude",
+    "mart_kpis",
+    "mart_par_contrat",
+    "mart_par_departement",
+    "mart_par_experience",
+    "mart_par_metier",
+    "mart_par_remote",
+    "mart_salaire_par_contrat",
+    "mart_salaire_par_metier",
+    "mart_tension",
+    "mart_timeseries",
+    "mart_top_competences",
+    "mart_top_villes",
+    "fct_offres"
+  ]
+}

@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: int_offres_valides
+    description: "Offres retenues pour le gold (twins Indeed retirés, WTTJ status=200)."
+    columns:
+      - name: offer_id
+        tests:
+          - not_null
+          - unique
+
+  - name: fct_offres
+    description: "Table de faits : offres dédupliquées/valides, reliées aux dimensions."
+    columns:
+      - name: offer_id
+        tests:
+          - not_null
+          - unique
+      - name: contrat_key
+        tests:
+          - relationships:
+              to: ref('dim_contrat')
+              field: contrat_key
+      - name: remote_key
+        tests:
+          - relationships:
+              to: ref('dim_remote')
+              field: remote_key
+      - name: metier_key
+        tests:
+          - relationships:
+              to: ref('dim_metier')
+              field: metier_key
+      - name: lieu_key
+        tests:
+          - relationships:
+              to: ref('dim_lieu')
+              field: lieu_key
+      - name: entreprise_key
+        tests:
+          - relationships:
+              to: ref('dim_entreprise')
+              field: entreprise_key
+
+  - name: dim_contrat
+    columns:
+      - name: contrat_key
+        tests: [not_null, unique]
+      - name: contract
+        tests: [not_null, unique]
+
+  - name: dim_lieu
+    columns:
+      - name: lieu_key
+        tests: [not_null, unique]
+      - name: city
+        tests: [not_null, unique]
+
+  - name: dim_metier
+    columns:
+      - name: metier_key
+        tests: [not_null, unique]
+      - name: profession
+        tests: [not_null, unique]
+
+  - name: mart_kpis
+    description: "Carte d'identité chiffrée du marché (1 ligne)."
+  - name: mart_salaire_par_contrat
+    description: "Distribution salaire annualisé par contrat (effectif >= 5)."
+    columns:
+      - name: contrat
+        tests: [not_null, unique]

@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cartodata-de"
+version = "0.1.0"
+description = "Lakehouse ELT orchestré & DataOps sur le marché de l'emploi Data/IA en Île-de-France"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+  "duckdb>=1.1",
+  "pandas>=2.1",
+  "pyarrow>=14",
+  "pydantic>=2.5",
+  "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+dbt = ["dbt-core>=1.8", "dbt-duckdb>=1.8"]
+orchestration = ["dagster>=1.7", "dagster-webserver>=1.7"]
+api = ["fastapi>=0.110", "uvicorn[standard]>=0.29"]
+cloud = ["boto3>=1.34"]
+dev = ["pytest>=8", "ruff>=0.4"]
+
+[project.scripts]
+cartodata-pipeline = "cartodata_de.pipeline:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

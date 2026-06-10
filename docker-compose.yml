@@ -1,0 +1,28 @@
+# `docker compose up` => pipeline (one-shot) + API GOLD + UI Dagster.
+services:
+  pipeline:
+    build: .
+    command: python -m cartodata_de.pipeline
+    volumes:
+      - .:/app
+
+  api:
+    build: .
+    command: uvicorn cartodata_de.api:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      pipeline:
+        condition: service_completed_successfully
+
+  dagster:
+    build: .
+    command: dagster dev -f orchestration/definitions.py -h 0.0.0.0 -p 3000
+    ports:
+      - "3000:3000"
+    environment:
+      DAGSTER_HOME: /app/dagster_home
+    volumes:
+      - .:/app

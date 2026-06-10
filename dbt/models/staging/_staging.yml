@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: stg_offres
+    description: >
+      Offres conformées + colonnes dérivées (exp_bucket, sal_mid_eur).
+      Périmètre = toutes les lignes SILVER (avant dédup/validité).
+    columns:
+      - name: offer_id
+        description: "Clé technique de l'offre (préfixée par la source)."
+        tests:
+          - not_null
+          - unique
+      - name: source
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["WTTJ", "Indeed"]
+      - name: contract
+        tests:
+          - not_null
+      - name: departement
+        tests:
+          - not_null
+      - name: exp_bucket
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["Junior (< 3 ans)", "Confirmé (3-5 ans)", "Senior (5+ ans)", "Autre", "Non précisé"]

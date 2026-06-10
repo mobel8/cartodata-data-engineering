@@ -1,0 +1,49 @@
+name: CI — Lakehouse ELT
+
+on:
+  push:
+    paths: ["01-data-engineering/**"]
+  pull_request:
+    paths: ["01-data-engineering/**"]
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: 01-data-engineering
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+
+      - name: Lint (ruff)
+        run: ruff check .
+
+      - name: Tests unitaires (pytest)
+        # Les tests 'fullonly' (comptages de référence) sont sautés : la CI
+        # tourne sur l'échantillon commité, pas sur le dataset complet.
+        run: pytest -q
+
+      - name: Pipeline ELT sur échantillon + dbt build + tests
+        run: python -m cartodata_de.pipeline --ci --no-export
+
+      - name: Générer la doc dbt (lineage)
+        run: dbt docs generate --project-dir dbt --profiles-dir dbt --vars '{"silver_path": "data/silver/offres.parquet", "run_date": "2099-01-01"}'
+
+      - name: Publier la doc dbt en artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbt-docs
+          path: 01-data-engineering/dbt/target/

@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: silver
+    description: >
+      Couche SILVER conformée, produite par le pipeline Python
+      (cartodata_de.pipeline) à partir du BRONZE immuable. Fichier Parquet typé,
+      schéma unifié WTTJ + Indeed.
+    tables:
+      - name: offres
+        description: "Offres réconciliées (1 ligne = 1 offre source, twins marqués)."
+        meta:
+          external_location: "read_parquet('{{ var('silver_path') }}')"

@@ -1,0 +1,25 @@
+# Socle ELT — versions vérifiées sur la machine de build (Python 3.11)
+duckdb==1.5.3
+pandas==3.0.3
+pyarrow==24.0.0
+pydantic==2.13.4
+httpx==0.28.1
+
+# dbt (transformations GOLD + tests + docs)
+dbt-core==1.11.11
+dbt-duckdb==1.10.1
+
+# Orchestration
+dagster==1.*
+dagster-webserver==1.*
+
+# API read-only sur la couche GOLD
+fastapi==0.136.3
+uvicorn[standard]==0.49.0
+
+# Sync objet S3-compatible (optionnel, activé si credentials présents)
+boto3>=1.34
+
+# Qualité / CI
+pytest==9.0.3
+ruff==0.15.16

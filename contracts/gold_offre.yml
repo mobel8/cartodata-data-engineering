@@ -1,0 +1,51 @@
+# Data contract — table GOLD fct_offres (style Open Data Contract Standard, simplifié).
+# C'est le contrat que les modules consommateurs (BI, ML, GenAI) peuvent exiger.
+contract_id: cartodata.gold.fct_offres
+version: 1.0.0
+status: active
+owner: portfolio-data-engineering
+domain: marché de l'emploi Data/IA — Île-de-France
+
+description: >
+  Une ligne = une offre RETENUE (twins inter-sites retirés, WTTJ status=200),
+  réconciliée depuis deux sources hétérogènes (Welcome to the Jungle + Indeed),
+  salaires annualisés en EUR, géo résolue au département IDF.
+
+pii: false   # offres d'emploi publiques : aucune donnée personnelle.
+
+sla:
+  freshness: "<= 6h"          # rejeu du pipeline aligné sur le scraper (cron 6h)
+  schedule: "0 */6 * * *"
+  availability: "best-effort (portfolio)"
+
+schema:
+  - { field: offer_id,          type: string,  nullable: false, unique: true, description: "Clé technique préfixée par la source" }
+  - { field: source,            type: string,  nullable: false, enum: ["WTTJ", "Indeed"] }
+  - { field: url,               type: string,  nullable: true,  description: "URL canonique (unique si présente)" }
+  - { field: title,             type: string,  nullable: true }
+  - { field: company,           type: string,  nullable: true }
+  - { field: city,              type: string,  nullable: true }
+  - { field: departement,       type: string,  nullable: false, description: "Dépt IDF (75/77/78/91/92/93/94/95), IDF, Hors référentiel, Non précisé" }
+  - { field: is_idf,            type: boolean, nullable: false }
+  - { field: profession,        type: string,  nullable: true,  description: "profession.fr (taxonomie WTTJ)" }
+  - { field: contract,          type: string,  nullable: false, enum: ["CDI", "CDD", "Stage", "Alternance", "Freelance", "VIE", "Non précisé"] }
+  - { field: exp_bucket,        type: string,  nullable: false, enum: ["Junior (< 3 ans)", "Confirmé (3-5 ans)", "Senior (5+ ans)", "Autre", "Non précisé"] }
+  - { field: education,         type: string,  nullable: true }
+  - { field: remote,            type: string,  nullable: true,  enum: ["Total", "Partiel", "Ponctuel", "Non", "Non précisé"] }
+  - { field: sal_min_eur,       type: integer, nullable: true,  description: "Borne basse annualisée EUR (hygiène 8k-300k)" }
+  - { field: sal_max_eur,       type: integer, nullable: true }
+  - { field: sal_mid_eur,       type: integer, nullable: true,  description: "Milieu de fourchette (agrégats de distribution)" }
+  - { field: has_salary,        type: boolean, nullable: false }
+  - { field: posted_date,       type: date,    nullable: true,  description: "Fiable seulement si date_is_precise=true (WTTJ)" }
+  - { field: date_is_precise,   type: boolean, nullable: false, description: "false pour Indeed (dates relatives approximées)" }
+  - { field: skills,            type: "list<string>", nullable: false }
+
+quality_guarantees:
+  - "Comptages de référence figés (tests dbt 'fullonly') : WTTJ 2171, status=200 2164, CDI 1417, Paris 1216, Indeed 5752, salPer 789, 0 doublon d'URL."
+  - "min(sal_*) <= max(sal_*) garanti (réparation à l'ingestion)."
+  - "Complétude affichée EN CLAIR (mart_completude) : salaire ~24%, exp ~12%, edu ~9%."
+
+known_limitations:
+  - "Dates Indeed relatives -> exclues de l'axe temporel (dim_date = WTTJ uniquement)."
+  - "Indeed n'expose pas le contrat de façon fiable -> 'Non précisé'."
+  - "Géocodage lat/lon (BAN) non fait : granularité = département (backlog)."
