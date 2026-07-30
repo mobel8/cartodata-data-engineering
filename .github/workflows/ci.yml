@@ -36,11 +36,14 @@ jobs:
         run: python -m cartodata_de.pipeline --ci --no-export
 
       - name: Générer la doc dbt (lineage)
-        # Scalaire plié : la ligne contient « : » (JSON de --vars), interdit
-        # dans un scalaire YAML non cité (le workflow d'origine échouait au chargement).
+        # dbt s'exécute TOUJOURS avec cwd = dbt/ (contrat de profiles.yml : path
+        # ../warehouse/... relatif), comme le fait pipeline.py. Scalaire plié :
+        # la ligne contient « deux-points espace » (JSON de --vars), interdit dans
+        # un scalaire YAML non cité (le workflow d'origine échouait au chargement).
+        working-directory: dbt
         run: >
-          dbt docs generate --project-dir dbt --profiles-dir dbt
-          --vars '{"silver_path": "data/silver/offres.parquet", "run_date": "2099-01-01"}'
+          dbt docs generate --project-dir . --profiles-dir .
+          --vars '{"silver_path": "../data/silver/offres.parquet", "run_date": "2099-01-01"}'
 
       - name: Publier la doc dbt en artefact
         uses: actions/upload-artifact@v4
