@@ -7,7 +7,7 @@
   "n_salary": 1878,
   "pct_salary": 23.7,
   "n_rejects_salaire": 152,
-  "silver_path": "C:\\Users\\yamin\\Desktop\\Candidatures\\Profil Data\\_projets\\cartodata-idf\\01-data-engineering\\data\\silver\\offres.parquet",
+  "silver_path": "data/silver/offres.parquet",
   "dbt_returncode": 0,
   "gold_exported": [
     "mart_completude",
