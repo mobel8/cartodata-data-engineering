@@ -2,14 +2,8 @@ name: CI — Lakehouse ELT
 
 on:
   push:
-    paths: ["01-data-engineering/**"]
   pull_request:
-    paths: ["01-data-engineering/**"]
   workflow_dispatch:
-
-defaults:
-  run:
-    working-directory: 01-data-engineering
 
 jobs:
   build-test:
@@ -19,7 +13,9 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          # 3.13 : version des venvs vérifiés en local ; les versions épinglées
+          # (numpy 2.4.x, pandas 3.x) n'ont pas de distribution pour 3.11.
+          python-version: "3.13"
           cache: pip
 
       - name: Installer les dépendances
@@ -40,10 +36,17 @@ jobs:
         run: python -m cartodata_de.pipeline --ci --no-export
 
       - name: Générer la doc dbt (lineage)
-        run: dbt docs generate --project-dir dbt --profiles-dir dbt --vars '{"silver_path": "data/silver/offres.parquet", "run_date": "2099-01-01"}'
+        # dbt s'exécute TOUJOURS avec cwd = dbt/ (contrat de profiles.yml : path
+        # ../warehouse/... relatif), comme le fait pipeline.py. Scalaire plié :
+        # la ligne contient « deux-points espace » (JSON de --vars), interdit dans
+        # un scalaire YAML non cité (le workflow d'origine échouait au chargement).
+        working-directory: dbt
+        run: >
+          dbt docs generate --project-dir . --profiles-dir .
+          --vars '{"silver_path": "../data/silver/offres.parquet", "run_date": "2099-01-01"}'
 
       - name: Publier la doc dbt en artefact
         uses: actions/upload-artifact@v4
         with:
           name: dbt-docs
-          path: 01-data-engineering/dbt/target/
+          path: dbt/target/
