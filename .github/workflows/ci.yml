@@ -2,14 +2,8 @@ name: CI — Lakehouse ELT
 
 on:
   push:
-    paths: ["01-data-engineering/**"]
   pull_request:
-    paths: ["01-data-engineering/**"]
   workflow_dispatch:
-
-defaults:
-  run:
-    working-directory: 01-data-engineering
 
 jobs:
   build-test:
@@ -46,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dbt-docs
-          path: 01-data-engineering/dbt/target/
+          path: dbt/target/
